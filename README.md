@@ -1,5 +1,7 @@
 # Deep Dave — Portfolio
 
+**Live:** https://portfolio-deep-9e07.vercel.app
+
 Personal portfolio for **Deep Dave**, AI/ML Engineer (Pune, India). Built with
 Next.js App Router, TypeScript and Tailwind CSS, exported as a fully static site
 so it hosts free anywhere.
@@ -126,8 +128,9 @@ with them in place, but replace them before sharing the link:
       URLs as each goes public, and `demo: "https://..."` for any live demo.
 - [ ] **AI SQL Analyst description** — a placeholder description of the ADK
       agent; rewrite it in your own words once the project firms up.
-- [ ] **`siteUrl`** — set to `https://deepdave.dev`. Change it to your real
-      deployed domain (this drives OG tags, canonical URL and the sitemap).
+- [ ] **`siteUrl`** — now `https://portfolio-deep-9e07.vercel.app`. If you add
+      a custom domain in Vercel, change it here too (it drives the canonical
+      URL, OG tags and the sitemap).
 - [ ] **Certification years** — optional `year` field is unset on all six; add
       `year: "2026"` to any you want dated.
 

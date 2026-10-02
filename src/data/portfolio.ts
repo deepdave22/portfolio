@@ -402,8 +402,11 @@ export const sections: Record<
 
 /* ── Site metadata (SEO) ────────────────────────────────────────────────── */
 
-/** TODO: set this to your real domain once deployed — it drives OG tags + sitemap. */
-export const siteUrl = "https://deepdave.dev";
+/**
+ * The deployed address. It drives the canonical link, Open Graph tags and
+ * sitemap, so update it if you attach a custom domain in Vercel.
+ */
+export const siteUrl = "https://portfolio-deep-9e07.vercel.app";
 
 export const seo = {
   title: `${person.name} — ${person.title}`,
