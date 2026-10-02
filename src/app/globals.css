@@ -1,26 +1,344 @@
 @import "tailwindcss";
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   DESIGN TOKENS
+
+   The palette is an argument, not decoration: Deep builds hybrid retrieval,
+   where a semantic search and a keyword search run side by side and get fused
+   into one ranked answer. Teal is the semantic path, amber the lexical one.
+   They appear together wherever the site is talking about his work, and
+   converge in the hero.
+
+   Dark is the default (:root); [data-theme="light"] overrides it. Every colour
+   is a token, so components never need dark: variants.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces — ink navy, a real hue rather than a tinted black */
+  --bg: #0e1420;
+  --bg-elev: #151d2b;
+  --bg-sunken: #0a0f18;
+  --bg-raised: #1c2637;
+
+  /* Text */
+  --fg: #e9edf3;
+  --fg-dim: #b7c0cf;
+  --muted: #8e9aad;
+
+  /* Structure */
+  --line: rgba(255, 255, 255, 0.09);
+  --line-strong: rgba(255, 255, 255, 0.18);
+
+  /* The two retrieval paths */
+  --semantic: #2bb3a3;
+  --semantic-ink: #45c9b9;
+  --semantic-soft: rgba(43, 179, 163, 0.13);
+
+  --lexical: #e8a33d;
+  --lexical-ink: #f0b45c;
+  --lexical-soft: rgba(232, 163, 61, 0.13);
+
+  /* Primary action = the fused result */
+  --accent: #e8a33d;
+  --accent-ink: #f0b45c;
+  --accent-soft: rgba(232, 163, 61, 0.13);
+  --accent-contrast: #21160a;
+
+  --grid: rgba(255, 255, 255, 0.028);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 12px 40px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
+}
+
+[data-theme="light"] {
+  /* Cool paper, deliberately not the warm cream that every generated page uses */
+  --bg: #f2f4f7;
+  --bg-elev: #ffffff;
+  --bg-sunken: #e8ecf2;
+  --bg-raised: #ffffff;
+
+  --fg: #101827;
+  --fg-dim: #36415a;
+  --muted: #556075;
+
+  --line: rgba(16, 24, 39, 0.12);
+  --line-strong: rgba(16, 24, 39, 0.24);
+
+  /* Both accents darkened until text on paper clears WCAG AA */
+  --semantic: #0e7a6e;
+  --semantic-ink: #0a5f56;
+  --semantic-soft: rgba(14, 122, 110, 0.1);
+
+  --lexical: #b4701b;
+  --lexical-ink: #8a5310;
+  --lexical-soft: rgba(180, 112, 27, 0.11);
+
+  /* Deep enough that white button text clears AA (5.3:1) and the focus ring
+     still reads against paper (4.6:1). */
+  --accent: #9a5f16;
+  --accent-ink: #8a5310;
+  --accent-soft: rgba(154, 95, 22, 0.11);
+  --accent-contrast: #ffffff;
+
+  --grid: rgba(16, 24, 39, 0.03);
+  --shadow: 0 1px 2px rgba(16, 24, 39, 0.04), 0 10px 32px rgba(16, 24, 39, 0.07);
+  color-scheme: light;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SCALE
+   One type scale (1.25 major third) and one 8px spacing scale. Everything on
+   the page picks from these — that is what keeps sizes uniform across sections.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  --text-2xs: 0.6875rem; /* 11px — mono micro-labels */
+  --text-xs: 0.8125rem; /* 13px — mono data, tags */
+  --text-sm: 0.9375rem; /* 15px */
+  --text-base: 1.0625rem; /* 17px — serif body */
+  --text-lg: 1.1875rem; /* 19px — lead paragraphs */
+  --text-xl: 1.5rem; /* 24px — h3 */
+  --text-2xl: 1.875rem; /* 30px */
+  --text-3xl: 2.375rem; /* 38px — h2 */
+  --text-4xl: 3rem; /* 48px */
+  --text-5xl: 4rem; /* 64px — h1 */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+
+  /* One vertical rhythm for every section, and one gutter for every container */
+  --section-y: clamp(4.5rem, 9vw, 7.5rem);
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --measure: 68ch; /* body line length stays under ~80 characters */
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-bg-elev: var(--bg-elev);
+  --color-bg-sunken: var(--bg-sunken);
+  --color-bg-raised: var(--bg-raised);
+  --color-fg: var(--fg);
+  --color-fg-dim: var(--fg-dim);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-semantic: var(--semantic);
+  --color-semantic-ink: var(--semantic-ink);
+  --color-semantic-soft: var(--semantic-soft);
+  --color-lexical: var(--lexical);
+  --color-lexical-ink: var(--lexical-ink);
+  --color-lexical-soft: var(--lexical-soft);
+
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+
+  --font-display: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-source-serif), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, "SFMono-Regular", monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-serif);
+  font-size: var(--text-base);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TYPE CLASSES
+   Named, fixed steps. Components use these instead of picking ad-hoc sizes,
+   which is what stops headings drifting between sections.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.t-display {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 7vw, var(--text-5xl));
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4.5vw, var(--text-3xl));
+  font-weight: 650;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+}
+
+.t-h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+}
+
+.t-h4 {
+  font-family: var(--font-display);
+  font-size: var(--text-base);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.t-lead {
+  font-size: var(--text-lg);
+  line-height: 1.6;
+  color: var(--fg-dim);
+}
+
+.t-body {
+  font-size: var(--text-base);
+  line-height: 1.7;
+  color: var(--fg-dim);
+}
+
+.t-small {
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+/* Monospace is reserved for real machine data: dates, metrics, tech names. */
+.t-data {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.t-data-sm {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  line-height: 1.45;
+  letter-spacing: 0;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LAYOUT PRIMITIVES
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.container-page {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section-y {
+  padding-block: var(--section-y);
+}
+
+.measure {
+  max-width: var(--measure);
+}
+
+/* A tag: tech names, tools. Mono because it is literally machine vocabulary. */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: var(--bg-sunken);
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.tag-accent {
+  border-color: color-mix(in srgb, var(--accent) 34%, transparent);
+  background: var(--accent-soft);
+  color: var(--fg);
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -4rem;
+  z-index: 100;
+  transition: top 0.18s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Document-column rules: a faint nod to the technical manuals the RAG work
+   indexes. Static, CSS-only, costs nothing. */
+.bg-columns {
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--grid) 0 1px,
+    transparent 1px 8rem
+  );
+}
+
+@keyframes live-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+.live-dot {
+  animation: live-dot 2.6s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — the canvas checks the same query in JS.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

@@ -1,0 +1,12 @@
+# Normalise line endings for source, but never touch binaries.
+# The placeholder resume.pdf is plain ASCII, so without this Git would treat it
+# as text and rewrite its line endings on a Windows checkout, which corrupts the
+# PDF's byte offsets.
+* text=auto
+
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.woff2 binary
